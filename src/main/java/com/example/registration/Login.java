@@ -52,7 +52,7 @@ public class Login extends HttpServlet {
 	                }
 	            } else {
 	                request.setAttribute("status", "failed");
-	                dispatcher = request.getRequestDispatcher("login.jsp");
+	                dispatcher = request.getRequestDispatcher("registration.jsp");
 	            }
 
 				dispatcher.forward(request, response);

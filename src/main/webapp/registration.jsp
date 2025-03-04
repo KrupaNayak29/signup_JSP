@@ -34,7 +34,7 @@
 							</div>
 							<div class="form-group">
 								<label for="email"><i class="zmdi zmdi-email"></i></label> <input
-									type="email" name="email" id="email" placeholder="Your Email" />
+									type="email" name="email" id="email" placeholder="Your Email" UNIQUE/>
 							</div>
 							<div class="form-group">
 								<label for="pass"><i class="zmdi zmdi-lock"></i></label> <input
@@ -55,6 +55,16 @@
 								<input type="text" name="roles" id="roles"
 									placeholder="Enter your role" />
 							</div>
+							 <div id="address-container" class="mb-3">
+                <div class="address-item row mb-2">
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" name="address_line" placeholder="Address Line" required>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-success" onclick="addAddressField()">+</button>
+                    </div>
+                </div>
+            </div>
 							<div class="form-group">
 								<input type="checkbox" name="agree-term" id="agree-term"
 									class="agree-term" /> <label for="agree-term"
@@ -92,6 +102,25 @@
 	if(status == "success"){
 		swal("Congrats","Account created","success");
 	}
+	 function addAddressField() {
+         const container = document.getElementById('address-container');
+         const addressItem = document.createElement('div');
+         addressItem.className = 'address-item row mb-2';
+
+         addressItem.innerHTML = `
+             <div class="col-md-10">
+                 <input type="text" class="form-control" name="address_line" placeholder="Address Line" required>
+             </div>
+             <div class="col-md-2">
+                 <button type="button" class="btn btn-danger" onclick="removeAddressField(this)">-</button>
+             </div>
+         `;
+
+         container.appendChild(addressItem);
+     }
+	 function removeAddressField(button) {
+         button.parentElement.parentElement.remove();
+     }
 </script>
 </body>
 <!-- This templates was made by Colorlib (https://colorlib.com) -->
