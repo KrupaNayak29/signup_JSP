@@ -1,13 +1,8 @@
 <%
-    if (session.getAttribute("name") == null) {
-        response.sendRedirect("login.jsp");
-    }
-    String role = (String) session.getAttribute("roles");
     String name = (String) session.getAttribute("name");
-    //response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
-	//response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
-	//response.setDateHeader("Expires", 0); // Proxies.
-    
+    HttpSession sessionUser = request.getSession(false);
+    String role = (sessionUser != null) ? (String) sessionUser.getAttribute("roles") : null;
+
 %>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>

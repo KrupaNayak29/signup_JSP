@@ -60,6 +60,8 @@
 						class="nav-link py-3 px-0 px-lg-3 rounded" href="logout"><%=session.getAttribute("name") %></a></li>
 						<li class="nav-item mx-0 mx-lg-1 bg-danger"><a
 						class="nav-link py-3 px-0 px-lg-3 rounded" href="logout"><%= role %></a></li>
+							<li class="nav-item mx-0 mx-lg-1 bg-danger"><a href="myAccount.jsp" class="btn btn-primary">Edit Profile</a>
+							</li>
 					</ul>
 					
 					

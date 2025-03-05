@@ -21,49 +21,46 @@ import javax.servlet.http.HttpSession;
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-  
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			String uemail=request.getParameter("username");
-			String upwd=request.getParameter("password");
-			HttpSession session=request.getSession();
-			RequestDispatcher dispatcher=null;
-			
-			try {
-				Class.forName("com.mysql.jdbc.Driver");
-				Connection conn =DriverManager.getConnection("jdbc:mysql://localhost:3306/signup?useSSL=false","root","root123");
-	            PreparedStatement pst = conn.prepareStatement("SELECT uname, roles FROM users WHERE uemail=? AND upwd=?");
-	            pst.setString(1, uemail);
-	            pst.setString(2, upwd);
+		String uemail = request.getParameter("username");
+		String upwd = request.getParameter("password");
+		HttpSession session = request.getSession();
+		RequestDispatcher dispatcher = null;
 
-	            ResultSet rs = pst.executeQuery();
-	            if (rs.next()) {
-	                String uname = rs.getString("uname");
-	                String role = rs.getString("roles");
+		try {
+			// Fix: Use correct MySQL Driver
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/signup?useSSL=false", "root", "root123");
 
-	                session.setAttribute("name", uname);
-	                session.setAttribute("roles", role);
+			PreparedStatement pst = conn.prepareStatement("SELECT uname, roles FROM users WHERE uemail=? AND upwd=?");
+			pst.setString(1, uemail);
+			pst.setString(2, upwd);
 
-	                if ("admin".equalsIgnoreCase(role)) {
-	                    dispatcher = request.getRequestDispatcher("admin.jsp");
-	                } else if ("employee".equalsIgnoreCase(role)) {
-	                    dispatcher = request.getRequestDispatcher("index.jsp");
-	                } else {
-	                    dispatcher = request.getRequestDispatcher("index.jsp");
-	                }
-	            } else {
-	                request.setAttribute("status", "failed");
-	                dispatcher = request.getRequestDispatcher("registration.jsp");
-	            }
+			ResultSet rs = pst.executeQuery();
+			if (rs.next()) {
+				String uname = rs.getString("uname");
+				String role = rs.getString("roles");
 
-				dispatcher.forward(request, response);
-				} catch (Exception e) {
-				e.printStackTrace();
-				
+				// Set session attributes
+				session.setAttribute("name", uname);
+				session.setAttribute("roles", role);
+
+				// Redirect based on role
+				if ("admin".equalsIgnoreCase(role)) {
+					dispatcher = request.getRequestDispatcher("admin.jsp");
+				} else if ("employee".equalsIgnoreCase(role)) {
+					dispatcher = request.getRequestDispatcher("index.jsp"); // Employee redirects to index.jsp
+				} else {
+					dispatcher = request.getRequestDispatcher("index.jsp"); // Default case
+				}
+			} else {
+				request.setAttribute("status", "failed");
+				dispatcher = request.getRequestDispatcher("registration.jsp");
 			}
+
+			dispatcher.forward(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-	
 }
-
-
-
-
